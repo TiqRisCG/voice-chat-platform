@@ -65,15 +65,19 @@ function VoiceControls({
   };
 
   const screenTrackRef = participants
-    .flatMap((p) =>
-      Array.from(p.trackPublications.values())
+    .flatMap((p) => {
+      const publications = [
+        ...p.trackPublications.values(),
+      ] as import('livekit-client').TrackPublication[];
+
+      return publications
         .filter((pub) => pub.source === Track.Source.ScreenShare && pub.track)
         .map((pub) => ({
           participant: p,
           publication: pub,
           source: Track.Source.ScreenShare,
-        }))
-    )[0];
+        }));
+    })[0];
 
   return (
     <div className="p-3 bg-[#141420] border-b border-zinc-800 space-y-3">
